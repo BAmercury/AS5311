@@ -1,12 +1,13 @@
 #include "Arduino.h"
 #include "AS5311.h"
 
-AS5311::AS5311(uint16_t DataPin, uint16_t ClockPin, uint16_t ChipSelectPin)
-           : _data(DataPin), _clock(ClockPin), _cs(ChipSelectPin)
+AS5311::AS5311(uint16_t DataPin, uint16_t ClockPin, uint16_t ChipSelectPin, uint16_t IndexPin)
+           : _data(DataPin), _clock(ClockPin), _cs(ChipSelectPin), _index(IndexPin)
 {
     pinMode(_data, INPUT);
     pinMode(_clock, OUTPUT);
     pinMode(_cs, OUTPUT);
+    pinMode(_index, INPUT);
 }
 
 
