@@ -1,4 +1,4 @@
-AS5311 Arduino Library - NSFW
+AS5311 SSI Interface Arduino Library - NSFW
 =============================
 
 Library for accessing data and error codes from Austrian Microsystems AS5311 12 bit linear position encoder
