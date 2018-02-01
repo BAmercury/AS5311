@@ -3,7 +3,7 @@
 int DataPin = 4;
 int ClockPin = 3;
 int ChipSelectPin = 2;
-int IndexPin = 5;
+int IndexPin = 1;
 
 
 
@@ -12,7 +12,7 @@ int IndexPin = 5;
 void setup() {
   // put your setup code here, to run once:
 
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   pinMode(DataPin, INPUT);
   pinMode(ClockPin, OUTPUT);
@@ -29,21 +29,25 @@ void loop() {
   Serial.print("Measured: ");
   Serial.println(value);
 
-  //value = encoder_position();
-  //Serial.print("Position: ");
-  //Serial.println(value);
+  long pos;
 
-  delay(1000);
+  pos = encoder_position();
+  Serial.print("Position: ");
+  Serial.println(pos);
+
+  delay(2000);
   
 }
 
 
-long encoder_position()
+unsigned int encoder_position()
 {
-  return ((encoder_value() * 2)/4096);
+  unsigned int value;
+  value = encoder_value();
+  return ((value * 2)/4096);
 }
 
-long encoder_value()
+unsigned int encoder_value()
 {
   return (read_chip() >> 6);
 
