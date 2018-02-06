@@ -7,6 +7,7 @@ using ArduinoDriver;
 using ArduinoDriver.SerialProtocol;
 using ArduinoUploader.Hardware;
 using ArduinoUploader;
+using System.Threading;
 
 namespace AS5311
 {
@@ -21,19 +22,15 @@ namespace AS5311
             const int ChipSelectPin = 2;
             const int IndexPin = 1;
 
-
+            Console.WriteLine("Stating up Program");
+            Console.WriteLine("Connecting to Arduino");
             using (var driver = new ArduinoDriver.ArduinoDriver(Arduino, true))
             {
-
-                driver.Send(new PinModeRequest(DataPin, PinMode.Input));
-                driver.Send(new PinModeRequest(ClockPin, PinMode.Output));
-                driver.Send(new PinModeRequest(ChipSelectPin, PinMode.Output));
-                driver.Send(new PinModeRequest(IndexPin, PinMode.Input));
-
+                AS3511_Chip chip = new AS3511_Chip(driver, DataPin, ChipSelectPin, IndexPin, ClockPin);
 
                 while (true)
                 {
-                    AS3511_Chip chip = new AS3511_Chip(driver,DataPin,ChipSelectPin,IndexPin,ClockPin));
+                    
 
                     long value;
                     value = chip.encoder_value();
@@ -41,7 +38,13 @@ namespace AS5311
                     Console.WriteLine(value);
 
                     long pos;
-                    pos = chip.encoder_position
+                    pos = chip.encoder_position();
+                    Console.Write("Pos: ");
+                    Console.WriteLine(pos);
+
+                    //Thread.Sleep(2000); // again will do something better later on
+
+
                     
 
                 }

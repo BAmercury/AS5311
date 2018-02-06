@@ -1,6 +1,6 @@
 #include "AS5311.h"
 
-AS5311 myAS5311(2,3,4,5); // data, clock, chip select, index
+AS5311 myAS5311(4,3,2,1); // data, clock, chip select, index
 
 void setup()
 {

@@ -30,6 +30,11 @@ namespace AS5311
             _IndexPin = (byte)IndexPin;
             _ClockPin = (byte)ClockPin;
 
+            _driver.Send(new PinModeRequest(_DataPin, PinMode.Input));
+            _driver.Send(new PinModeRequest(_ClockPin, PinMode.Output));
+            _driver.Send(new PinModeRequest(_ChipSelectPin, PinMode.Output));
+            _driver.Send(new PinModeRequest(_IndexPin, PinMode.Input));
+
 
         }
 
@@ -54,8 +59,8 @@ namespace AS5311
             UInt32 raw_value = 0;
             UInt16 inputstream = 0;
             UInt16 c;
-            using (_driver)
-            {
+            //using (_driver)
+            //{
                 _driver.Send(new DigitalWriteRequest(_ChipSelectPin, DigitalValue.High));
                 _driver.Send(new DigitalWriteRequest(_ClockPin, DigitalValue.High));
                 Thread.Sleep(100); //Will later replace with something more efficient
@@ -67,12 +72,13 @@ namespace AS5311
                 {
                     _driver.Send(new DigitalWriteRequest(_ClockPin, DigitalValue.High));
                     Thread.Sleep(10);
-                    inputstream = Convert.ToUInt16(_driver.Send(new DigitalReadRequest(_DataPin)));
+                    var temp = _driver.Send(new DigitalReadRequest(_DataPin));
+                    inputstream = Convert.ToUInt16(temp.PinRead);
                     raw_value = ((raw_value << 1) + inputstream);
                     _driver.Send(new DigitalWriteRequest(_ClockPin, DigitalValue.Low));
                     Thread.Sleep(10);
                 }
-            }
+            //}
 
             return raw_value;
 
