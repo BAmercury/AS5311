@@ -18,7 +18,7 @@ uint32_t AS5311::encoder_position(void)
 
 uint32_t AS5311::encoder_value(void)
 {
-  return (read_chip() >> 6);
+  return (read_chip());
 }
 
 uint32_t AS5311::encoder_error(void)
@@ -47,7 +47,7 @@ uint32_t AS5311::read_chip(void)
   delay(10);
   digitalWrite(_clock, LOW);
   delay(10);
-  for (c = 0; c < 18; c++)
+  for (c = 0; c < 12; c++)
   {
     digitalWrite(_clock, HIGH);
     delay(10);
