@@ -40,7 +40,7 @@ namespace AS5311
                     Console.WriteLine(value);
 
                     //long pos;
-                    pos = pos + (((double)value * 2) / 4096);
+                    pos = pos + ( ((double)value) *  (2/ 4096) );
                     //UInt32 pos = chip.encoder_position(value);
                     Console.Write("Pos: ");
                     Console.WriteLine(pos);
