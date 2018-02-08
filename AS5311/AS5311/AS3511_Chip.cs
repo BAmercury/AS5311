@@ -38,18 +38,16 @@ namespace AS5311
 
         }
 
-        public UInt32 encoder_position()
+        public double encoder_position(UInt32 value)
         {
-            UInt32 value;
-            value = encoder_value();
-            return ((value * 2) / 4096);
+            return ( (value * 2) / 4096);
 
 
         }
 
         public UInt32 encoder_value()
         {
-            return (read_chip() >> 6);
+            return (read_chip());
 
         }
 
@@ -68,12 +66,20 @@ namespace AS5311
                 Thread.Sleep(10);
                 _driver.Send(new DigitalWriteRequest(_ClockPin, DigitalValue.Low));
                 Thread.Sleep(10);
-                for (c = 0; c < 18; c++)
+                for (c = 0; c < 12; c++)
                 {
                     _driver.Send(new DigitalWriteRequest(_ClockPin, DigitalValue.High));
                     Thread.Sleep(10);
-                    var temp = _driver.Send(new DigitalReadRequest(_DataPin));
-                    inputstream = Convert.ToUInt16(temp.PinRead);
+                    DigitalReadResponse temp = _driver.Send(new DigitalReadRequest(_DataPin));
+                    if (temp.PinValue == DigitalValue.Low)
+                    {
+                    inputstream = 0;
+                     }
+                    else
+                    {
+                    inputstream = 1;
+                    }
+                    //inputstream = Convert.ToUInt16(temp.PinRead);
                     raw_value = ((raw_value << 1) + inputstream);
                     _driver.Send(new DigitalWriteRequest(_ClockPin, DigitalValue.Low));
                     Thread.Sleep(10);

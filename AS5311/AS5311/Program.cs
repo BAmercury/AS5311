@@ -17,32 +17,35 @@ namespace AS5311
         {
             const ArduinoModel Arduino = ArduinoModel.UnoR3;
 
-            const int DataPin = 4;
+            const int DataPin = 2;
             const int ClockPin = 3;
-            const int ChipSelectPin = 2;
+            const int ChipSelectPin = 4;
             const int IndexPin = 1;
+            double pos = 0;
 
             Console.WriteLine("Stating up Program");
             Console.WriteLine("Connecting to Arduino");
             using (var driver = new ArduinoDriver.ArduinoDriver(Arduino, true))
             {
                 AS3511_Chip chip = new AS3511_Chip(driver, DataPin, ChipSelectPin, IndexPin, ClockPin);
-
+                Console.WriteLine("Here");
                 while (true)
                 {
-                    
 
-                    long value;
-                    value = chip.encoder_value();
+
+                    //long value;
+                    UInt32 value = chip.encoder_value();
+                    //UInt32 value = 434;
                     Console.Write("Measured: ");
                     Console.WriteLine(value);
 
-                    long pos;
-                    pos = chip.encoder_position();
+                    //long pos;
+                    pos = pos + (((double)value * 2) / 4096);
+                    //UInt32 pos = chip.encoder_position(value);
                     Console.Write("Pos: ");
                     Console.WriteLine(pos);
 
-                    //Thread.Sleep(2000); // again will do something better later on
+                    Thread.Sleep(100); // again will do something better later on
 
 
                     
