@@ -1,34 +1,46 @@
 #include "AS5311.h"
 
-<<<<<<< HEAD
-AS5311 myAS5311(4,3,2,1); // data, clock, chip select, index
-=======
+
 AS5311 myAS5311(2,3,4,1); // data, clock, chip select, index
 long pos = 0;
->>>>>>> ff4a015bec9fd18313fbbb0727dbba27a39ad8c6
+long oldpos = 0;
+long rev = 0;
+long offset = 0;
+bool offset_t = false;
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
-
 void loop()
 {
-  long value;
-  value = myAS5311.encoder_value();
-  Serial.print("measured value: ");
-  Serial.println(value);
-  pos = myAS5311.encoder_position();
-  Serial.print("measured position: ");
-  Serial.println(pos);
-//  if (myAS5311.encoder_error())
-//  {
-//    Serial.println("error detected.");
-//    if (myAS5311.err_value.DECn) Serial.println("DECn error");
-//    if (myAS5311.err_value.INCn) Serial.println("INCn error");
-//    if (myAS5311.err_value.COF) Serial.println("COF error");
-//    if (myAS5311.err_value.OCF) Serial.println("OCF error");
-//    if (myAS5311.err_value.LIN) Serial.println("LIN error");
-//  }
-  delay(2000);
+  pos = myAS5311.encoder_value();
+
+  if ( (pos - oldpos) > 2048)
+  {
+    rev -= 1;
+  }
+  else if ( (oldpos - pos) > 2048)
+  {
+    rev += 1;
+  }
+
+  oldpos = pos;
+
+  if (offset_t == false)
+  {
+    offset = -pos;
+    offset_t = true;
+    
+  }
+
+  Serial.print("Rev: ");
+  Serial.println(rev);
+
+  //long count = (rev * 4092) + (pos + offset);
+  //count = (count &~((long)3 << 22));
+  //Serial.print("Count: ");
+  //Serial.println(count);
+
+  //delay(2000);
 }
