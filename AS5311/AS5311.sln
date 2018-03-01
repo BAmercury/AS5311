@@ -8,6 +8,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{80AE931E-B41C-4CF5-A9B6-F95B17613705}"
 	ProjectSection(SolutionItems) = preProject
 		..\examples\status\AS5311.cpp = ..\examples\status\AS5311.cpp
+		..\examples\encoder_lib\encoder_lib\encoder_lib.ino = ..\examples\encoder_lib\encoder_lib\encoder_lib.ino
+		..\examples\encoder_lib\encoder_lib\encoder_lib.ino.standard.hex = ..\examples\encoder_lib\encoder_lib\encoder_lib.ino.standard.hex
 		..\examples\status\status.ino = ..\examples\status\status.ino
 		..\testing\testing.ino = ..\testing\testing.ino
 	EndProjectSection

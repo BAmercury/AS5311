@@ -31,17 +31,8 @@ void loop() {
   
   if (newPos != oldPos) {
     Serial.print("New Pos (mm) = ");
-    double pos = (newPos / 1024) * 2;
+    double pos = (newPos / 1024.0) * 2.0;
     Serial.println(pos);
     oldPos = newPos;
   }
-//  // if a character is sent from the serial monitor,
-//  // reset both back to zero.
-//  if (Serial.available()) {
-//    Serial.read();
-//    Serial.println("Reset both knobs to zero");
-//    knobLeft.write(0);
-//    knobRight.write(0);
-//  }
-  //delay(100);
 }
