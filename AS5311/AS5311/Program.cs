@@ -17,6 +17,8 @@ namespace AS5311
         static void Main(string[] args)
         {
 
+            // eww
+            List<List<double>> data = new List<List<double>>();
 
             Console.WriteLine("Stating up Program");
             Console.WriteLine("Connecting to Arduino");
@@ -39,7 +41,7 @@ namespace AS5311
             var uploader = new ArduinoSketchUploader(
                 new ArduinoSketchUploaderOptions()
                 {
-                    FileName = @"C:\Users\Merc.MERCURY\Documents\AS5311\examples\encoder_lib\encoder_lib\encoder_lib.ino.standard.hex",
+                    FileName = @"C:\Users\Merc.MERCURY\Documents\mechanica\mechanica\mechanica_arduino\mechanica_arduino.ino.standard.hex",
                     PortName = serialPortName,
                     ArduinoModel = ArduinoModel.UnoR3
                 }
@@ -58,12 +60,40 @@ namespace AS5311
                 while (!Console.KeyAvailable)
                 {
                     string s = port.ReadLine();
-                    Console.WriteLine(s);
+                    string[] message = s.Split(',');
+                    List<double> temp = new List<double>();
+                    //temp.Add(Convert.ToDouble(s));
+                    foreach (string element in message)
+                    {
+
+                        //Console.WriteLine(element);
+                       
+                        double value = Convert.ToDouble(element);
+                        temp.Add(value);
+                        Console.WriteLine(element);
+
+                    }
+                    data.Add(temp);
 
 
                 }
             } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
 
+            Console.WriteLine("here");
+            using (TextWriter tw = new StreamWriter("SavedList.csv"))
+            {
+                foreach (List<double> member in data)
+                {
+                    //tw.Write(member);
+
+                    foreach (double guy in member)
+                    {
+                       tw.Write(guy);
+                       tw.Write(",");
+                    }
+                    tw.WriteLine();
+                }
+            }
 
 
         }
