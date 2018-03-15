@@ -101,6 +101,23 @@ namespace AS5311
 
                 Console.WriteLine("Press ESC to stop");
                 port.Write("<2>");
+                bool quick_three = true;
+                while (quick_three)
+                {
+                    if (port.BytesToRead > 0)
+                    {
+                        string s = port.ReadLine();
+                        s = Regex.Replace(s, @"\r", string.Empty);
+
+                        if (s == "give")
+                        {
+                            port.Write("<70.00>");
+                            quick_three = false;
+                            Console.WriteLine("System Ready to Test");
+                            break;
+                        }
+                    }
+                }
 
                 while (!Console.KeyAvailable)
                 {
