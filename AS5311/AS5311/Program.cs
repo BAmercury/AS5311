@@ -26,7 +26,7 @@ namespace AS5311
 
 
             //Find Serial Port arduino is connected too
-            string serialPortName = "";
+            string serialPortName = "COM9";
             var allPortNames = SerialPortStream.GetPortNames();
             var distinctPorts = allPortNames.Distinct().ToList();
 
@@ -40,7 +40,7 @@ namespace AS5311
 
 
             // Upload HEX Uno file
-            var uploader = new ArduinoSketchUploader(
+            /*var uploader = new ArduinoSketchUploader(
                 new ArduinoSketchUploaderOptions()
                 {
                     FileName = @"C:\Users\Merc.MERCURY\Documents\mechanica\mechanica\mechanica_arduino\mechanica_arduino.ino.standard.hex",
@@ -51,10 +51,8 @@ namespace AS5311
 
             uploader.UploadSketch();
             Console.WriteLine("Uploaded hex");
+            */
 
-
-            do
-            {
 
                 //Set up communications with Arduino
                 SerialPortStream port = new SerialPortStream(serialPortName, 115200);
@@ -78,53 +76,35 @@ namespace AS5311
                     }
                   
                 }
-                Console.WriteLine("Resetting System");
-                port.Write("<1>");
-                bool quick_two = true;
-                while (quick_two)
-                {
+            Console.WriteLine("Want to start test?");
+            string start_test = Console.ReadLine();
+            Console.WriteLine("Input Desired Displacement Rate");
+            string displacement_rate = Console.ReadLine();
+            Console.WriteLine("Input Desired Distnace");
+            string distance = Console.ReadLine();
+            Console.WriteLine("Reset System Instead? ");
+            string reset = Console.ReadLine();
+            port.Write("<" + start_test + "," + displacement_rate + "," + distance + "," + reset + ">");
+            if (reset == "1")
+            {
+                quick = false;
+            }
+            else if(start_test == "1")
+            {
+                quick = true;
+
+            }
+            while (quick)
+            {
+
                     if (port.BytesToRead > 0)
                     {
                         string s = port.ReadLine();
-                        s = Regex.Replace(s, @"\r", string.Empty);
-
-                        if (s == "begin")
-                        {
-                            quick_two = false;
-                            Console.WriteLine("System Ready to Test");
-                            break;
-                        }
+                        if (s == "done")
+                    {
+                        quick = false;
+                        break;
                     }
-                }
-
-
-
-                Console.WriteLine("Press ESC to stop");
-                port.Write("<2>");
-                bool quick_three = true;
-                while (quick_three)
-                {
-                    if (port.BytesToRead > 0)
-                    {
-                        string s = port.ReadLine();
-                        s = Regex.Replace(s, @"\r", string.Empty);
-
-                        if (s == "give")
-                        {
-                            port.Write("<70.00>");
-                            quick_three = false;
-                            Console.WriteLine("System Ready to Test");
-                            break;
-                        }
-                    }
-                }
-
-                while (!Console.KeyAvailable)
-                {
-
-                    if (port.BytesToRead > 0)
-                    {
-                        string s = port.ReadLine();
                         string[] message = s.Split(',');
                         List<double> temp = new List<double>();
                         //temp.Add(Convert.ToDouble(s));
@@ -142,27 +122,30 @@ namespace AS5311
 
                     }
 
-                 
+
 
 
                 }
-            } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
-
-            Console.WriteLine("here");
-            using (TextWriter tw = new StreamWriter("SavedList.csv"))
+            if (start_test == "1")
             {
-                foreach (List<double> member in data)
+                Console.WriteLine("Saving Data");
+                using (TextWriter tw = new StreamWriter("SavedList.csv"))
                 {
-                    //tw.Write(member);
-
-                    foreach (double guy in member)
+                    foreach (List<double> member in data)
                     {
-                       tw.Write(guy);
-                       tw.Write(",");
+                        //tw.Write(member);
+
+                        foreach (double guy in member)
+                        {
+                            tw.Write(guy);
+                            tw.Write(",");
+                        }
+                        tw.WriteLine();
                     }
-                    tw.WriteLine();
                 }
+
             }
+
 
 
         }
